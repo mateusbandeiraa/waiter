@@ -50,7 +50,7 @@ class TimingsTest {
 	@Test
 	void testSyncAsyncTakes15Seconds() throws InterruptedException, ExecutionException {
 		var syncWaiterClient = new SyncWaiterClient();
-		var asyncWaiterClient = new AsyncWaiterClient();
+		var asyncWaiterClient = AsyncWaiterClient.create(syncWaiterClient);
 
 		SimpleTimer timer = SimpleTimer.start();
 		HttpResponse<String> get5Seconds = syncWaiterClient.get5Seconds();
@@ -65,7 +65,7 @@ class TimingsTest {
 	@Test
 	void testAsyncSyncTakes10Seconds() throws InterruptedException, ExecutionException {
 		var syncWaiterClient = new SyncWaiterClient();
-		var asyncWaiterClient = new AsyncWaiterClient();
+		var asyncWaiterClient = AsyncWaiterClient.create(syncWaiterClient);
 
 		SimpleTimer timer = SimpleTimer.start();
 		
@@ -83,7 +83,7 @@ class TimingsTest {
 
 	@Test
 	void testAsyncAsyncTakes10Seconds() throws InterruptedException, ExecutionException {
-		var asyncWaiterClient = new AsyncWaiterClient();
+		var asyncWaiterClient = AsyncWaiterClient.create(new SyncWaiterClient());
 
 		SimpleTimer timer = SimpleTimer.start();
 		
