@@ -3,6 +3,7 @@ package dev.bandeira.waiter.client;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 
+@AsyncWrapper(AsyncWaiterClient.class)
 public class SyncWaiterClient {
 
 	private static final String URI_BASE = "http://localhost:7070";

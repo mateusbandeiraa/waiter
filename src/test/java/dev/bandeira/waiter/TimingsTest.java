@@ -3,6 +3,7 @@ package dev.bandeira.waiter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.byLessThan;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import dev.bandeira.waiter.client.AsyncFactory;
 import dev.bandeira.waiter.client.AsyncWaiterClient;
 import dev.bandeira.waiter.client.SyncWaiterClient;
 import kong.unirest.HttpResponse;
@@ -48,9 +50,9 @@ class TimingsTest {
 	}
 
 	@Test
-	void testSyncAsyncTakes15Seconds() throws InterruptedException, ExecutionException {
+	void testSyncAsyncTakes15Seconds() throws InterruptedException, ExecutionException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		var syncWaiterClient = new SyncWaiterClient();
-		var asyncWaiterClient = AsyncWaiterClient.create(syncWaiterClient);
+		var asyncWaiterClient = AsyncFactory.makeAsync(AsyncWaiterClient.class);
 
 		SimpleTimer timer = SimpleTimer.start();
 		HttpResponse<String> get5Seconds = syncWaiterClient.get5Seconds();
@@ -63,9 +65,9 @@ class TimingsTest {
 	}
 
 	@Test
-	void testAsyncSyncTakes10Seconds() throws InterruptedException, ExecutionException {
+	void testAsyncSyncTakes10Seconds() throws InterruptedException, ExecutionException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		var syncWaiterClient = new SyncWaiterClient();
-		var asyncWaiterClient = AsyncWaiterClient.create(syncWaiterClient);
+		var asyncWaiterClient = AsyncFactory.makeAsync(AsyncWaiterClient.class);
 
 		SimpleTimer timer = SimpleTimer.start();
 		
@@ -82,8 +84,8 @@ class TimingsTest {
 	}
 
 	@Test
-	void testAsyncAsyncTakes10Seconds() throws InterruptedException, ExecutionException {
-		var asyncWaiterClient = AsyncWaiterClient.create(new SyncWaiterClient());
+	void testAsyncAsyncTakes10Seconds() throws InterruptedException, ExecutionException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		var asyncWaiterClient = AsyncFactory.makeAsync(AsyncWaiterClient.class);
 
 		SimpleTimer timer = SimpleTimer.start();
 		
